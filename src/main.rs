@@ -3,10 +3,7 @@ use std::fs::File;
 use std::io::Read;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    let query = &args[1];
-    let filename = &args[2];
+    let (query, filename) = parse_args();
 
     println!("Searching for {}", query);
     println!("In file {}", filename);

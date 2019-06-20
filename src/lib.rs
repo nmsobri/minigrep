@@ -26,6 +26,34 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
     let mut file = File::open(config.filename.clone())?;
     let mut content = String::new();
     file.read_to_string(&mut content)?;
-    println!("Content of {} is \n{}", config.filename, content);
+
+    for result in search(&config.query, &content) {
+        println!("{}", result);
+    }
+
     Ok(())
+}
+
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut results = vec![];
+    for line in contents.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+
+    results
+}
+
+
+#[cfg(test)]
+mod test {
+    use crate::*;
+
+    #[test]
+    fn one_result() {
+        let query = "duct";
+        let contents = "Rust:\nsafe, fast, productive\nPick three.";
+        assert_eq!(vec!["safe, fast, productive"], search(query, contents));
+    }
 }

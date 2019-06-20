@@ -1,5 +1,5 @@
-use ::minigrep::Config;
 use ::minigrep::run;
+use ::minigrep::Config;
 use std::{env, process};
 
 fn main() {

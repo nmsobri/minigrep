@@ -1,9 +1,11 @@
+//! Main code for parsing and performing the search
 use std::env;
 use std::fs::File;
 use std::io::Read;
 use std::env::Args;
 use std::error::Error;
 
+/// Struct to hold cofiguration value
 pub struct Config {
     query: String,
     filename: String,
@@ -36,6 +38,7 @@ impl Config {
     }
 }
 
+/// Main code to load the file and perform the search
 pub fn run(config: Config) -> Result<(), Box<Error>> {
     let mut file = File::open(config.filename.clone())?;
     let mut content = String::new();
@@ -55,10 +58,12 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
     Ok(())
 }
 
+/// Search in an sensitive way
 pub fn search_sensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents.lines().filter(|line| line.contains(query)).collect()
 }
 
+/// Search in an insensitive way
 pub fn search_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
     contents.lines().filter(|line| line.contains(&query)).collect()
